@@ -1,0 +1,90 @@
+<Window x:Class="CommitTimesheet.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:CommitTimesheet.ViewModels"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:SettingsViewModel}"
+        Title="Settings"
+        Width="640" SizeToContent="Height"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Style="{StaticResource AppWindow}">
+    <Window.Resources>
+        <Style TargetType="TextBlock" x:Key="FieldLabel">
+            <Setter Property="Margin" Value="0,6,14,0" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Padding" Value="4,3" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="Height" Value="84" />
+            <Setter Property="BorderBrush" Value="{StaticResource BorderBrush}" />
+        </Style>
+    </Window.Resources>
+
+    <StackPanel Margin="18">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0" Text="Repo folders" Style="{StaticResource FieldLabel}" />
+            <ListBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Repos}" SelectedItem="{Binding SelectedRepo}" />
+            <StackPanel Grid.Row="0" Grid.Column="2" Margin="8,0,0,0">
+                <Button Content="Add…" Command="{Binding AddRepoCommand}" />
+                <Button Content="Remove" Command="{Binding RemoveRepoCommand}" Margin="0,6,0,0" />
+            </StackPanel>
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Text="Author emails" Style="{StaticResource FieldLabel}" Margin="0,18,14,0" />
+            <ListBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding AuthorEmails}" SelectedItem="{Binding SelectedEmail}" Margin="0,12,0,0" />
+            <StackPanel Grid.Row="1" Grid.Column="2" Margin="8,12,0,0">
+                <Button Content="Remove" Command="{Binding RemoveEmailCommand}" />
+            </StackPanel>
+
+            <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding NewEmail, UpdateSourceTrigger=PropertyChanged}" Margin="0,6,0,0">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding AddEmailCommand}" />
+                </TextBox.InputBindings>
+            </TextBox>
+            <Button Grid.Row="2" Grid.Column="2" Content="Add" Command="{Binding AddEmailCommand}" Margin="8,6,0,0" />
+
+            <TextBlock Grid.Row="3" Grid.Column="0" Text="Who" Style="{StaticResource FieldLabel}" Margin="0,18,14,0" />
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Who, UpdateSourceTrigger=PropertyChanged}" Margin="0,12,0,0" />
+
+            <TextBlock Grid.Row="4" Grid.Column="0" Text="Project" Style="{StaticResource FieldLabel}" Margin="0,14,14,0" />
+            <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding Project, UpdateSourceTrigger=PropertyChanged}" Margin="0,8,0,0" />
+
+            <TextBlock Grid.Row="5" Grid.Column="0" Text="Hours per day" Style="{StaticResource FieldLabel}" Margin="0,14,14,0" />
+            <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding HoursPerDay, UpdateSourceTrigger=PropertyChanged}" Margin="0,8,0,0" Width="80" HorizontalAlignment="Left" />
+
+            <TextBlock Grid.Row="6" Grid.Column="0" Text="Claude CLI path" Style="{StaticResource FieldLabel}" Margin="0,14,14,0" />
+            <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding ClaudePath, UpdateSourceTrigger=PropertyChanged}" Margin="0,8,0,0" />
+            <Button Grid.Row="6" Grid.Column="2" Content="Browse…" Command="{Binding BrowseClaudeCommand}" Margin="8,8,0,0" />
+            <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding ClaudePathHint}" Style="{StaticResource Muted}" TextWrapping="Wrap" Margin="0,4,0,0" FontSize="12" />
+        </Grid>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,22,0,0">
+            <Button Content="Save" Style="{StaticResource PrimaryButton}" IsDefault="True" MinWidth="84"
+                    IsEnabled="{Binding CanSave}" Click="OnSaveClick" />
+            <Button Content="Cancel" IsCancel="True" MinWidth="84" Margin="8,0,0,0" />
+        </StackPanel>
+    </StackPanel>
+</Window>
